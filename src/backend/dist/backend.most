@@ -1,0 +1,201 @@
+// Version: 3.0.0
+type AIAnalysisResult__723041167 =
+  {
+    flags : [Text];
+    noteId : NoteId__167160349;
+    score : Nat;
+    similarNoteId : ?NoteId__167160349;
+    similarityPercent : ?Nat;
+    suggestedTags : [Text];
+    suggestedTitle : Text;
+    timestamp : Timestamp__301639476
+  };
+type AILogEntry__289069629 =
+  {
+    flags : [Text];
+    noteId : NoteId__167160349;
+    score : Nat;
+    similarNoteId : ?NoteId__167160349;
+    similarityPercent : ?Nat;
+    timestamp : Timestamp__301639476
+  };
+type AccountStatus__168164563 =
+  {
+    #active;
+    #banned :
+      {
+        adminPrincipal : UserId__158757552;
+        reason : Text;
+        timestamp : Timestamp__301639476
+      };
+    #suspended : {reason : Text; until : ?Timestamp__301639476}
+  };
+type AdminActionKind__199542206 =
+  {
+    #banUser;
+    #flagNote;
+    #removeNote;
+    #setOpenAIKey;
+    #suspendUser;
+    #unbanUser;
+    #unsuspendUser;
+    #updateQuality
+  };
+type AdminActionTarget__1028146312 =
+  {#note : NoteId__167160349; #systemAction; #user : UserId__158757552};
+type AdminAction__919338929 =
+  {
+    adminPrincipal : UserId__158757552;
+    id : Nat;
+    kind : AdminActionKind__199542206;
+    reason : Text;
+    target : AdminActionTarget__1028146312;
+    timestamp : Timestamp__301639476
+  };
+type Data__791452850<K, V> =
+  {var count : Nat__490723111; kvs : [var ?(K, V)]};
+type Internal__8484328<K, V> =
+  {children : [var ?Node__46230540<K, V>]; data : Data__791452850<K, V>};
+type Leaf__809889148<K, V> = {data : Data__791452850<K, V>};
+type Map__158565046<K, V> = Map__297112838<K, V>;
+type Map__297112838<K, V> =
+  {var root : Node__46230540<K, V>; var size : Nat__490723111};
+type Map__605269027<K, V> = Map__158565046<K, V>;
+type Nat__490723111 = Nat__920180692;
+type Nat__920180692 = Nat;
+type Node__46230540<K, V> =
+  {#internal : Internal__8484328<K, V>; #leaf : Leaf__809889148<K, V>};
+type NoteId__167160349 = Nat;
+type Note__1063160515 =
+  {
+    aiScore : ?Nat;
+    creditsAwarded : Nat;
+    description : Text;
+    downloadCount : Nat;
+    fileRef : Text;
+    id : NoteId__167160349;
+    isFlagged : Bool;
+    isRemoved : Bool;
+    price : Nat;
+    qualityStars : Nat;
+    subject : Text;
+    timestamp : Timestamp__301639476;
+    title : Text;
+    uploaderName : Text;
+    uploaderPrincipal : UserId__158757552
+  };
+type OldNote__821963071 =
+  {
+    creditsAwarded : Nat;
+    description : Text;
+    downloadCount : Nat;
+    fileId : Text;
+    id : Nat;
+    price : Nat;
+    qualityStars : Nat;
+    subject : Text;
+    timestamp : Int;
+    title : Text;
+    uploaderName : Text;
+    uploaderPrincipal : Principal
+  };
+type OldUserProfile__416069324 =
+  {
+    credits : Nat;
+    principal : Principal;
+    totalEarned : Nat;
+    totalUploads : Nat
+  };
+type Timestamp__301639476 = Int;
+type UserId__158757552 = Principal;
+type UserProfile__129828592 =
+  {
+    credits : Nat;
+    joinedAt : Timestamp__301639476;
+    name : Text;
+    principal : UserId__158757552;
+    totalEarned : Nat;
+    totalUploads : Nat
+  };
+type UserRole__1073662873 = {#admin; #guest; #user};
+actor ({
+  stable accessControlState :
+    {
+      var adminAssigned : Bool;
+      userRoles : Map__605269027<Principal, UserRole__1073662873>
+    };
+  stable actionLog :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?AdminAction__919338929]];
+      var elementIndex : Nat__490723111
+    };
+  stable aiLogs :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?AILogEntry__289069629]];
+      var elementIndex : Nat__490723111
+    };
+  stable aiResults :
+    {
+      var root :
+        Node__46230540<NoteId__167160349, AIAnalysisResult__723041167>;
+      var size : Nat__490723111
+    };
+  in var nextNoteId : Nat;
+  in notes : Map__605269027<Nat, OldNote__821963071>;
+  stable openAIApiKey : {var value : ?Text};
+  in var totalCreditsAwarded : Nat;
+  in userProfiles : Map__605269027<Principal, OldUserProfile__416069324>;
+  stable userStatuses :
+    {
+      var root : Node__46230540<UserId__158757552, AccountStatus__168164563>;
+      var size : Nat__490723111
+    }
+}, {
+  stable accessControlState :
+    {
+      var adminAssigned : Bool;
+      userRoles : Map__605269027<Principal, UserRole__1073662873>
+    };
+  stable actionLog :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?AdminAction__919338929]];
+      var elementIndex : Nat__490723111
+    };
+  stable aiLogs :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?AILogEntry__289069629]];
+      var elementIndex : Nat__490723111
+    };
+  stable aiResults :
+    {
+      var root :
+        Node__46230540<NoteId__167160349, AIAnalysisResult__723041167>;
+      var size : Nat__490723111
+    };
+  stable counters :
+    {
+      var nextActionId : Nat;
+      var nextNoteId : Nat;
+      var totalCreditsAwarded : Nat
+    };
+  stable notes :
+    {
+      var root : Node__46230540<NoteId__167160349, Note__1063160515>;
+      var size : Nat__490723111
+    };
+  stable openAIApiKey : {var value : ?Text};
+  stable userProfiles :
+    {
+      var root : Node__46230540<UserId__158757552, UserProfile__129828592>;
+      var size : Nat__490723111
+    };
+  stable userStatuses :
+    {
+      var root : Node__46230540<UserId__158757552, AccountStatus__168164563>;
+      var size : Nat__490723111
+    }
+});

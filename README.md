@@ -1,2 +1,7 @@
-# g-r-o-w-platform
-Exported from Caffeine project: G.R.O.W Platform
+## 
+
+This source code has been exported from [Caffeine](https://caffeine.ai/)
+
+### Coming Soon
+
+We are working on tools to help you build locally and deploy your apps back to caffeine.

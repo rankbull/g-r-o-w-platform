@@ -1,0 +1,209 @@
+type http_request_result = 
+ record {
+   body: blob;
+   headers: vec http_header;
+   status: nat;
+ };
+type http_header = 
+ record {
+   name: text;
+   value: text;
+ };
+type _ImmutableObjectStorageRefillResult = 
+ record {
+   success: opt bool;
+   topped_up_amount: opt nat;
+ };
+type _ImmutableObjectStorageRefillInformation = record {
+                                                  proposed_top_up_amount:
+                                                   opt nat;};
+type _ImmutableObjectStorageCreateCertificateResult = 
+ record {
+   blob_hash: text;
+   method: text;
+ };
+type WeeklyUploadPoint = 
+ record {
+   count: nat;
+   weekLabel: text;
+ };
+type UserRole = 
+ variant {
+   admin;
+   guest;
+   user;
+ };
+type UserProfile = 
+ record {
+   credits: nat;
+   joinedAt: Timestamp;
+   name: text;
+   "principal": UserId;
+   totalEarned: nat;
+   totalUploads: nat;
+ };
+type UserId = principal;
+type UserAdminView = 
+ record {
+   credits: nat;
+   joinedAt: Timestamp;
+   name: text;
+   "principal": UserId;
+   status: AccountStatus;
+   totalEarned: nat;
+   totalUploads: nat;
+ };
+type TransformationOutput = 
+ record {
+   body: blob;
+   headers: vec http_header;
+   status: nat;
+ };
+type TransformationInput = 
+ record {
+   context: blob;
+   response: http_request_result;
+ };
+type TopContributor = 
+ record {
+   avgAIScore: opt nat;
+   name: text;
+   "principal": UserId;
+   totalEarned: nat;
+   totalUploads: nat;
+ };
+type Timestamp = int;
+type SubjectDownloadStat = 
+ record {
+   downloadCount: nat;
+   subject: text;
+ };
+type NoteInput = 
+ record {
+   description: text;
+   fileRef: text;
+   price: nat;
+   subject: text;
+   title: text;
+   uploaderName: text;
+ };
+type NoteId = nat;
+type Note = 
+ record {
+   aiScore: opt nat;
+   creditsAwarded: nat;
+   description: text;
+   downloadCount: nat;
+   fileRef: text;
+   id: NoteId;
+   isFlagged: bool;
+   isRemoved: bool;
+   price: nat;
+   qualityStars: nat;
+   subject: text;
+   timestamp: Timestamp;
+   title: text;
+   uploaderName: text;
+   uploaderPrincipal: UserId;
+ };
+type ModerationItem = 
+ record {
+   aiFlags: vec text;
+   flagReason: text;
+   flaggedAt: Timestamp;
+   noteId: NoteId;
+   noteTitle: text;
+   uploaderPrincipal: UserId;
+ };
+type AnalyticsData = 
+ record {
+   downloadsPerSubject: vec SubjectDownloadStat;
+   flaggedNotes: nat;
+   removedNotes: nat;
+   topContributors: vec TopContributor;
+   totalCreditsAwarded: nat;
+   totalDownloads: nat;
+   totalNotes: nat;
+   totalUsers: nat;
+   weeklyUploads: vec WeeklyUploadPoint;
+ };
+type AccountStatus = 
+ variant {
+   active;
+   banned: record {
+             adminPrincipal: UserId;
+             reason: text;
+             timestamp: Timestamp;
+           };
+   suspended: record {
+                reason: text;
+                until: opt Timestamp;
+              };
+ };
+type AILogEntry = 
+ record {
+   flags: vec text;
+   noteId: NoteId;
+   score: nat;
+   similarNoteId: opt NoteId;
+   similarityPercent: opt nat;
+   timestamp: Timestamp;
+ };
+type AIAnalysisResult = 
+ record {
+   flags: vec text;
+   noteId: NoteId;
+   score: nat;
+   similarNoteId: opt NoteId;
+   similarityPercent: opt nat;
+   suggestedTags: vec text;
+   suggestedTitle: text;
+   timestamp: Timestamp;
+ };
+service : {
+  _immutableObjectStorageBlobsAreLive: (hashes: vec blob) -> (vec bool) query;
+  _immutableObjectStorageBlobsToDelete: () -> (vec blob) query;
+  _immutableObjectStorageConfirmBlobDeletion: (blobs: vec blob) -> ();
+  _immutableObjectStorageCreateCertificate: (blobHash: text) ->
+   (_ImmutableObjectStorageCreateCertificateResult);
+  _immutableObjectStorageRefillCashier: (refillInformation:
+   opt _ImmutableObjectStorageRefillInformation) ->
+   (_ImmutableObjectStorageRefillResult);
+  _immutableObjectStorageUpdateGatewayPrincipals: () -> ();
+  _initializeAccessControl: () -> ();
+  addCredits: (user: UserId, amount: nat) -> ();
+  analyzeNoteQuality: (noteId: NoteId) -> (AIAnalysisResult);
+  assignCallerUserRole: (user: principal, role: UserRole) -> ();
+  banUser: (target: UserId, reason: text) -> ();
+  downloadNote: (noteId: NoteId) -> ();
+  flagNote: (noteId: NoteId, reason: text) -> ();
+  getAIAnalysisResult: (noteId: NoteId) -> (opt AIAnalysisResult) query;
+  getAILogs: () -> (vec AILogEntry) query;
+  getAdminAnalytics: () -> (AnalyticsData) query;
+  getCallerUserProfile: () -> (opt UserProfile) query;
+  getCallerUserRole: () -> (UserRole) query;
+  getLeaderboard: () -> (vec UserProfile) query;
+  getModerationQueue: () -> (vec ModerationItem) query;
+  getMyCredits: () -> (nat) query;
+  getNote: (noteId: NoteId) -> (opt Note) query;
+  getNotes: () -> (vec Note) query;
+  getOpenAIKey: () -> (bool) query;
+  getPlatformStats: () ->
+   (record {
+      totalCreditsAwarded: nat;
+      totalDownloads: nat;
+      totalUploads: nat;
+    }) query;
+  getRecentUploads: (limit: nat) -> (vec Note) query;
+  getUserList: () -> (vec UserAdminView) query;
+  getUserProfile: (user: UserId) -> (opt UserProfile) query;
+  isCallerAdmin: () -> (bool) query;
+  removeNote: (noteId: NoteId) -> ();
+  saveCallerUserProfile: (profile: UserProfile) -> ();
+  setOpenAIKey: (key: text) -> ();
+  suspendUser: (target: UserId, reason: text, until: opt Timestamp) -> ();
+  transform: (input: TransformationInput) -> (TransformationOutput) query;
+  unsuspendUser: (target: UserId) -> ();
+  updateQuality: (noteId: NoteId, stars: nat) -> ();
+  uploadNoteWithFile: (input: NoteInput) -> (NoteId);
+}

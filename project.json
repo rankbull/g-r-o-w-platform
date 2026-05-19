@@ -1,0 +1,27 @@
+{
+  "overview": "G.R.O.W (Global Resources for Online Wisdom) is a cyberpunk-themed AI-powered academic productivity ecosystem where students buy, sell, and exchange academic notes. Features Internet Identity login, real file storage for PDFs and images, an AI Note Quality Analyzer that auto-scores uploads and detects duplicates, and a comprehensive admin dashboard with moderation tools, analytics charts, and reporting.",
+  "features": [
+    "Cyberpunk dark space theme with neon accents and animated backgrounds",
+    "Internet Identity authentication with role-based admin access",
+    "PDF and image note uploads with persistent backend storage",
+    "AI Note Quality Analyzer: auto-scores 0-100, detects duplicates, suggests titles and tags",
+    "Enhanced admin dashboard with charts, moderation, user management, bulk export",
+    "Credits system with upload-to-earn and leaderboard",
+    "Live upload feed, webinars, subjects preview pages",
+    "SPA navigation with browser history support",
+    "G.R.O.W Assistant AI bot for tutorials and guidance",
+    "Web Audio API synthesized sound effects"
+  ],
+  "category": "education",
+  "tags": [
+    "education",
+    "notes",
+    "students",
+    "ai",
+    "cyberpunk",
+    "academic",
+    "study",
+    "platform"
+  ],
+  "last_updated": "2026-05-19T15:24:10.236Z"
+}

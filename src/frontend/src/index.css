@@ -1,0 +1,333 @@
+@font-face {
+  font-family: "Bricolage Grotesque";
+  src: url("/assets/fonts/BricolageGrotesque.woff2") format("woff2");
+  font-weight: 200 800;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/assets/fonts/JetBrainsMono.woff2") format("woff2");
+  font-weight: 300 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "General Sans";
+  src: url("/assets/fonts/GeneralSans.woff2") format("woff2");
+  font-weight: 200 700;
+  font-display: swap;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Cyberpunk dark theme - OKLCH raw L C H values */
+    --background: 0.08 0.015 265;
+    --foreground: 0.93 0.01 200;
+    --card: 0.11 0.02 265;
+    --card-foreground: 0.93 0.01 200;
+    --popover: 0.1 0.018 265;
+    --popover-foreground: 0.93 0.01 200;
+    /* Neon cyan primary */
+    --primary: 0.78 0.18 200;
+    --primary-foreground: 0.08 0.015 265;
+    /* Electric violet secondary */
+    --secondary: 0.65 0.22 290;
+    --secondary-foreground: 0.95 0.01 290;
+    /* Muted */
+    --muted: 0.15 0.02 265;
+    --muted-foreground: 0.55 0.04 210;
+    /* Acid green accent */
+    --accent: 0.72 0.22 155;
+    --accent-foreground: 0.08 0.015 265;
+    /* Destructive */
+    --destructive: 0.58 0.24 27;
+    --destructive-foreground: 0.95 0.01 27;
+    /* Borders & input */
+    --border: 0.2 0.03 265;
+    --input: 0.15 0.02 265;
+    --ring: 0.78 0.18 200;
+    --radius: 0.75rem;
+    /* Charts */
+    --chart-1: 0.78 0.18 200;
+    --chart-2: 0.72 0.22 155;
+    --chart-3: 0.65 0.22 290;
+    --chart-4: 0.8 0.18 75;
+    --chart-5: 0.6 0.22 27;
+    /* Sidebar */
+    --sidebar-background: 0.09 0.018 265;
+    --sidebar-foreground: 0.9 0.01 200;
+    --sidebar-primary: 0.78 0.18 200;
+    --sidebar-primary-foreground: 0.08 0.015 265;
+    --sidebar-accent: 0.15 0.02 265;
+    --sidebar-accent-foreground: 0.9 0.01 200;
+    --sidebar-border: 0.2 0.03 265;
+    --sidebar-ring: 0.78 0.18 200;
+    /* AI Quality Score Badge Colors */
+    --quality-danger: 0.58 0.24 27;
+    --quality-warning: 0.8 0.18 75;
+    --quality-success: 0.72 0.22 155;
+    /* Success/Warning/Danger variants */
+    --success: 0.72 0.22 155;
+    --warning: 0.8 0.18 75;
+    --danger: 0.58 0.24 27;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    color-scheme: dark;
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+}
+
+/* Cyber Grid Background */
+.cyber-grid-bg {
+  background-image: linear-gradient(
+      oklch(0.78 0.18 200 / 0.06) 1px,
+      transparent 1px
+    ), linear-gradient(90deg, oklch(0.78 0.18 200 / 0.06) 1px, transparent 1px);
+  background-size: 40px 40px;
+  animation: grid-shift 20s linear infinite;
+}
+
+@keyframes grid-shift {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 40px 40px;
+  }
+}
+
+/* Neon text utilities */
+.neon-text-cyan {
+  color: oklch(0.78 0.18 200);
+  text-shadow: 0 0 10px oklch(0.78 0.18 200 / 0.8), 0 0 30px
+    oklch(0.78 0.18 200 / 0.4);
+}
+
+.neon-text-violet {
+  color: oklch(0.65 0.22 290);
+  text-shadow: 0 0 10px oklch(0.65 0.22 290 / 0.8), 0 0 30px
+    oklch(0.65 0.22 290 / 0.4);
+}
+
+.neon-text-green {
+  color: oklch(0.72 0.22 155);
+  text-shadow: 0 0 10px oklch(0.72 0.22 155 / 0.8), 0 0 30px
+    oklch(0.72 0.22 155 / 0.4);
+}
+
+.neon-text-amber {
+  color: oklch(0.8 0.18 75);
+  text-shadow: 0 0 10px oklch(0.8 0.18 75 / 0.8), 0 0 30px
+    oklch(0.8 0.18 75 / 0.4);
+}
+
+/* Glow utilities */
+.glow-cyan {
+  box-shadow: 0 0 16px oklch(0.78 0.18 200 / 0.4), 0 0 40px
+    oklch(0.78 0.18 200 / 0.15);
+}
+
+.glow-violet {
+  box-shadow: 0 0 16px oklch(0.65 0.22 290 / 0.4), 0 0 40px
+    oklch(0.65 0.22 290 / 0.15);
+}
+
+.glow-green {
+  box-shadow: 0 0 16px oklch(0.72 0.22 155 / 0.4), 0 0 40px
+    oklch(0.72 0.22 155 / 0.15);
+}
+
+.neon-border {
+  border-color: oklch(0.78 0.18 200 / 0.5);
+}
+
+/* Card hover effect */
+.grow-card-hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.grow-card-hover:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px oklch(0.78 0.18 200 / 0.15);
+}
+
+/* Holographic card shimmer */
+.holo-card {
+  position: relative;
+  overflow: hidden;
+}
+.holo-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    transparent 30%,
+    oklch(0.78 0.18 200 / 0.04) 50%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+.holo-card:hover::before {
+  opacity: 1;
+}
+
+/* Scroll reveal animation */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.scroll-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+.scroll-reveal-delay-1 {
+  transition-delay: 0.1s;
+}
+.scroll-reveal-delay-2 {
+  transition-delay: 0.2s;
+}
+.scroll-reveal-delay-3 {
+  transition-delay: 0.3s;
+}
+.scroll-reveal-delay-4 {
+  transition-delay: 0.4s;
+}
+
+/* Slide-in from right animation for live feed */
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+.slide-in-right {
+  animation: slide-in-right 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Credit celebration overlay */
+@keyframes credit-burst {
+  0% {
+    transform: scale(0.3) translateY(40px);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.1) translateY(-10px);
+    opacity: 1;
+  }
+  80% {
+    transform: scale(0.98) translateY(0);
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+.credit-burst {
+  animation: credit-burst 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes particle-float {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-120px) rotate(360deg);
+    opacity: 0;
+  }
+}
+.particle {
+  animation: particle-float 1.5s ease-in forwards;
+}
+
+/* Countdown fade out */
+@keyframes fade-out-delayed {
+  0%,
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.fade-out-delayed {
+  animation: fade-out-delayed 2.5s ease forwards;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: oklch(0.1 0.018 265);
+}
+::-webkit-scrollbar-thumb {
+  background: oklch(0.25 0.04 265);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.78 0.18 200 / 0.5);
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+@keyframes pulse-glow {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes count-up {
+  from {
+    transform: translateY(8px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+.animate-count-up {
+  animation: count-up 0.4s ease forwards;
+}
